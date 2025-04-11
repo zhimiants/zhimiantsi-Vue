@@ -60,7 +60,11 @@
             <groupId>com.ruoyi</groupId>
             <artifactId>ruoyi-generator</artifactId>
         </dependency>
-
+        <!--        ershouche-->
+        <dependency>
+            <groupId>com.ruoyi</groupId>
+            <artifactId>ruoyi-ershouche</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
