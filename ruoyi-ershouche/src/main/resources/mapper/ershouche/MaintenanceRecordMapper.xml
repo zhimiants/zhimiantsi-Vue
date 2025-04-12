@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.ershouche.mapper.MaintenanceRecordMapper">
+    
+    <resultMap type="MaintenanceRecord" id="MaintenanceRecordResult">
+        <result property="id"    column="id"    />
+        <result property="carId"    column="car_id"    />
+        <result property="recordDate"    column="record_date"    />
+        <result property="itemDescription"    column="item_description"    />
+        <result property="cost"    column="cost"    />
+        <result property="workshop"    column="workshop"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectMaintenanceRecordVo">
+        select id, car_id, record_date, item_description, cost, workshop, create_time, update_time, remark from tb_maintenance_record
+    </sql>
+
+    <select id="selectMaintenanceRecordList" parameterType="MaintenanceRecord" resultMap="MaintenanceRecordResult">
+        <include refid="selectMaintenanceRecordVo"/>
+        <where>  
+            <if test="recordDate != null "> and record_date = #{recordDate}</if>
+            <if test="itemDescription != null  and itemDescription != ''"> and item_description = #{itemDescription}</if>
+            <if test="cost != null "> and cost = #{cost}</if>
+            <if test="workshop != null  and workshop != ''"> and workshop = #{workshop}</if>
+        </where>
+    </select>
+    
+    <select id="selectMaintenanceRecordById" parameterType="Long" resultMap="MaintenanceRecordResult">
+        <include refid="selectMaintenanceRecordVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertMaintenanceRecord" parameterType="MaintenanceRecord" useGeneratedKeys="true" keyProperty="id">
+        insert into tb_maintenance_record
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="carId != null">car_id,</if>
+            <if test="recordDate != null">record_date,</if>
+            <if test="itemDescription != null and itemDescription != ''">item_description,</if>
+            <if test="cost != null">cost,</if>
+            <if test="workshop != null">workshop,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="carId != null">#{carId},</if>
+            <if test="recordDate != null">#{recordDate},</if>
+            <if test="itemDescription != null and itemDescription != ''">#{itemDescription},</if>
+            <if test="cost != null">#{cost},</if>
+            <if test="workshop != null">#{workshop},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateMaintenanceRecord" parameterType="MaintenanceRecord">
+        update tb_maintenance_record
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="carId != null">car_id = #{carId},</if>
+            <if test="recordDate != null">record_date = #{recordDate},</if>
+            <if test="itemDescription != null and itemDescription != ''">item_description = #{itemDescription},</if>
+            <if test="cost != null">cost = #{cost},</if>
+            <if test="workshop != null">workshop = #{workshop},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteMaintenanceRecordById" parameterType="Long">
+        delete from tb_maintenance_record where id = #{id}
+    </delete>
+
+    <delete id="deleteMaintenanceRecordByIds" parameterType="String">
+        delete from tb_maintenance_record where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

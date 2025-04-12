@@ -12,11 +12,10 @@
     <artifactId>ruoyi-ershouche</artifactId>
 
     <properties>
-        <maven.compiler.source>21</maven.compiler.source>
-        <maven.compiler.target>21</maven.compiler.target>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
-<!--    核心模块-->
     <dependencies>
         <dependency>
             <groupId>com.ruoyi</groupId>

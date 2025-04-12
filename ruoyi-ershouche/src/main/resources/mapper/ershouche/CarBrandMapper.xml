@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.ershouche.mapper.CarBrandMapper">
+    
+    <resultMap type="CarBrand" id="CarBrandResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="logoUrl"    column="logo_url"    />
+        <result property="initial"    column="initial"    />
+        <result property="sortOrder"    column="sort_order"    />
+        <result property="country"    column="country"    />
+        <result property="website"    column="website"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectCarBrandVo">
+        select id, name, logo_url, initial, sort_order, country, website, create_time, update_time, remark from tb_car_brand
+    </sql>
+
+    <select id="selectCarBrandList" parameterType="CarBrand" resultMap="CarBrandResult">
+        <include refid="selectCarBrandVo"/>
+        <where>  
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="initial != null  and initial != ''"> and initial = #{initial}</if>
+            <if test="country != null  and country != ''"> and country = #{country}</if>
+            <if test="website != null  and website != ''"> and website = #{website}</if>
+        </where>
+    </select>
+    
+    <select id="selectCarBrandById" parameterType="Long" resultMap="CarBrandResult">
+        <include refid="selectCarBrandVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertCarBrand" parameterType="CarBrand" useGeneratedKeys="true" keyProperty="id">
+        insert into tb_car_brand
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null and name != ''">name,</if>
+            <if test="logoUrl != null">logo_url,</if>
+            <if test="initial != null">initial,</if>
+            <if test="sortOrder != null">sort_order,</if>
+            <if test="country != null">country,</if>
+            <if test="website != null">website,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null and name != ''">#{name},</if>
+            <if test="logoUrl != null">#{logoUrl},</if>
+            <if test="initial != null">#{initial},</if>
+            <if test="sortOrder != null">#{sortOrder},</if>
+            <if test="country != null">#{country},</if>
+            <if test="website != null">#{website},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateCarBrand" parameterType="CarBrand">
+        update tb_car_brand
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null and name != ''">name = #{name},</if>
+            <if test="logoUrl != null">logo_url = #{logoUrl},</if>
+            <if test="initial != null">initial = #{initial},</if>
+            <if test="sortOrder != null">sort_order = #{sortOrder},</if>
+            <if test="country != null">country = #{country},</if>
+            <if test="website != null">website = #{website},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteCarBrandById" parameterType="Long">
+        delete from tb_car_brand where id = #{id}
+    </delete>
+
+    <delete id="deleteCarBrandByIds" parameterType="String">
+        delete from tb_car_brand where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

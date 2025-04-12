@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.ershouche.mapper.InsuranceInfoMapper">
+    
+    <resultMap type="InsuranceInfo" id="InsuranceInfoResult">
+        <result property="id"    column="id"    />
+        <result property="carId"    column="car_id"    />
+        <result property="compulsoryExpiryDate"    column="compulsory_expiry_date"    />
+        <result property="commercialInfo"    column="commercial_info"    />
+        <result property="insuranceCompany"    column="insurance_company"    />
+        <result property="policyNo"    column="policy_no"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectInsuranceInfoVo">
+        select id, car_id, compulsory_expiry_date, commercial_info, insurance_company, policy_no, create_time, update_time, remark from tb_insurance_info
+    </sql>
+
+    <select id="selectInsuranceInfoList" parameterType="InsuranceInfo" resultMap="InsuranceInfoResult">
+        <include refid="selectInsuranceInfoVo"/>
+        <where>  
+            <if test="compulsoryExpiryDate != null "> and compulsory_expiry_date = #{compulsoryExpiryDate}</if>
+            <if test="insuranceCompany != null  and insuranceCompany != ''"> and insurance_company = #{insuranceCompany}</if>
+            <if test="policyNo != null  and policyNo != ''"> and policy_no = #{policyNo}</if>
+        </where>
+    </select>
+    
+    <select id="selectInsuranceInfoById" parameterType="Long" resultMap="InsuranceInfoResult">
+        <include refid="selectInsuranceInfoVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertInsuranceInfo" parameterType="InsuranceInfo" useGeneratedKeys="true" keyProperty="id">
+        insert into tb_insurance_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="carId != null">car_id,</if>
+            <if test="compulsoryExpiryDate != null">compulsory_expiry_date,</if>
+            <if test="commercialInfo != null">commercial_info,</if>
+            <if test="insuranceCompany != null">insurance_company,</if>
+            <if test="policyNo != null">policy_no,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="carId != null">#{carId},</if>
+            <if test="compulsoryExpiryDate != null">#{compulsoryExpiryDate},</if>
+            <if test="commercialInfo != null">#{commercialInfo},</if>
+            <if test="insuranceCompany != null">#{insuranceCompany},</if>
+            <if test="policyNo != null">#{policyNo},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateInsuranceInfo" parameterType="InsuranceInfo">
+        update tb_insurance_info
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="carId != null">car_id = #{carId},</if>
+            <if test="compulsoryExpiryDate != null">compulsory_expiry_date = #{compulsoryExpiryDate},</if>
+            <if test="commercialInfo != null">commercial_info = #{commercialInfo},</if>
+            <if test="insuranceCompany != null">insurance_company = #{insuranceCompany},</if>
+            <if test="policyNo != null">policy_no = #{policyNo},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteInsuranceInfoById" parameterType="Long">
+        delete from tb_insurance_info where id = #{id}
+    </delete>
+
+    <delete id="deleteInsuranceInfoByIds" parameterType="String">
+        delete from tb_insurance_info where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.ershouche.mapper.PurchaseRecordMapper">
+    
+    <resultMap type="PurchaseRecord" id="PurchaseRecordResult">
+        <result property="id"    column="id"    />
+        <result property="carId"    column="car_id"    />
+        <result property="supplierId"    column="supplier_id"    />
+        <result property="purchaseDate"    column="purchase_date"    />
+        <result property="purchasePrice"    column="purchase_price"    />
+        <result property="purchaseByUserId"    column="purchase_by_user_id"    />
+        <result property="paymentStatus"    column="payment_status"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectPurchaseRecordVo">
+        select id, car_id, supplier_id, purchase_date, purchase_price, purchase_by_user_id, payment_status, create_time, update_time, remark from tb_purchase_record
+    </sql>
+
+    <select id="selectPurchaseRecordList" parameterType="PurchaseRecord" resultMap="PurchaseRecordResult">
+        <include refid="selectPurchaseRecordVo"/>
+        <where>  
+            <if test="purchaseDate != null "> and purchase_date = #{purchaseDate}</if>
+            <if test="purchasePrice != null "> and purchase_price = #{purchasePrice}</if>
+            <if test="purchaseByUserId != null "> and purchase_by_user_id = #{purchaseByUserId}</if>
+            <if test="paymentStatus != null  and paymentStatus != ''"> and payment_status = #{paymentStatus}</if>
+        </where>
+    </select>
+    
+    <select id="selectPurchaseRecordById" parameterType="Long" resultMap="PurchaseRecordResult">
+        <include refid="selectPurchaseRecordVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertPurchaseRecord" parameterType="PurchaseRecord" useGeneratedKeys="true" keyProperty="id">
+        insert into tb_purchase_record
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="carId != null">car_id,</if>
+            <if test="supplierId != null">supplier_id,</if>
+            <if test="purchaseDate != null">purchase_date,</if>
+            <if test="purchasePrice != null">purchase_price,</if>
+            <if test="purchaseByUserId != null">purchase_by_user_id,</if>
+            <if test="paymentStatus != null">payment_status,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="carId != null">#{carId},</if>
+            <if test="supplierId != null">#{supplierId},</if>
+            <if test="purchaseDate != null">#{purchaseDate},</if>
+            <if test="purchasePrice != null">#{purchasePrice},</if>
+            <if test="purchaseByUserId != null">#{purchaseByUserId},</if>
+            <if test="paymentStatus != null">#{paymentStatus},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updatePurchaseRecord" parameterType="PurchaseRecord">
+        update tb_purchase_record
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="carId != null">car_id = #{carId},</if>
+            <if test="supplierId != null">supplier_id = #{supplierId},</if>
+            <if test="purchaseDate != null">purchase_date = #{purchaseDate},</if>
+            <if test="purchasePrice != null">purchase_price = #{purchasePrice},</if>
+            <if test="purchaseByUserId != null">purchase_by_user_id = #{purchaseByUserId},</if>
+            <if test="paymentStatus != null">payment_status = #{paymentStatus},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deletePurchaseRecordById" parameterType="Long">
+        delete from tb_purchase_record where id = #{id}
+    </delete>
+
+    <delete id="deletePurchaseRecordByIds" parameterType="String">
+        delete from tb_purchase_record where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

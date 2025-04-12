@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.ershouche.mapper.SalesRecordMapper">
+    
+    <resultMap type="SalesRecord" id="SalesRecordResult">
+        <result property="id"    column="id"    />
+        <result property="recordNo"    column="record_no"    />
+        <result property="carId"    column="car_id"    />
+        <result property="leadId"    column="lead_id"    />
+        <result property="customerName"    column="customer_name"    />
+        <result property="customerPhone"    column="customer_phone"    />
+        <result property="finalPrice"    column="final_price"    />
+        <result property="saleDate"    column="sale_date"    />
+        <result property="salespersonUserId"    column="salesperson_user_id"    />
+        <result property="paymentMethod"    column="payment_method"    />
+        <result property="deliveryDate"    column="delivery_date"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectSalesRecordVo">
+        select id, record_no, car_id, lead_id, customer_name, customer_phone, final_price, sale_date, salesperson_user_id, payment_method, delivery_date, create_time, update_time, remark from tb_sales_record
+    </sql>
+
+    <select id="selectSalesRecordList" parameterType="SalesRecord" resultMap="SalesRecordResult">
+        <include refid="selectSalesRecordVo"/>
+        <where>  
+            <if test="recordNo != null  and recordNo != ''"> and record_no = #{recordNo}</if>
+            <if test="customerName != null  and customerName != ''"> and customer_name like concat('%', #{customerName}, '%')</if>
+            <if test="saleDate != null "> and sale_date = #{saleDate}</if>
+            <if test="salespersonUserId != null "> and salesperson_user_id = #{salespersonUserId}</if>
+        </where>
+    </select>
+    
+    <select id="selectSalesRecordById" parameterType="Long" resultMap="SalesRecordResult">
+        <include refid="selectSalesRecordVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertSalesRecord" parameterType="SalesRecord" useGeneratedKeys="true" keyProperty="id">
+        insert into tb_sales_record
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="recordNo != null and recordNo != ''">record_no,</if>
+            <if test="carId != null">car_id,</if>
+            <if test="leadId != null">lead_id,</if>
+            <if test="customerName != null and customerName != ''">customer_name,</if>
+            <if test="customerPhone != null">customer_phone,</if>
+            <if test="finalPrice != null">final_price,</if>
+            <if test="saleDate != null">sale_date,</if>
+            <if test="salespersonUserId != null">salesperson_user_id,</if>
+            <if test="paymentMethod != null">payment_method,</if>
+            <if test="deliveryDate != null">delivery_date,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="recordNo != null and recordNo != ''">#{recordNo},</if>
+            <if test="carId != null">#{carId},</if>
+            <if test="leadId != null">#{leadId},</if>
+            <if test="customerName != null and customerName != ''">#{customerName},</if>
+            <if test="customerPhone != null">#{customerPhone},</if>
+            <if test="finalPrice != null">#{finalPrice},</if>
+            <if test="saleDate != null">#{saleDate},</if>
+            <if test="salespersonUserId != null">#{salespersonUserId},</if>
+            <if test="paymentMethod != null">#{paymentMethod},</if>
+            <if test="deliveryDate != null">#{deliveryDate},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSalesRecord" parameterType="SalesRecord">
+        update tb_sales_record
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="recordNo != null and recordNo != ''">record_no = #{recordNo},</if>
+            <if test="carId != null">car_id = #{carId},</if>
+            <if test="leadId != null">lead_id = #{leadId},</if>
+            <if test="customerName != null and customerName != ''">customer_name = #{customerName},</if>
+            <if test="customerPhone != null">customer_phone = #{customerPhone},</if>
+            <if test="finalPrice != null">final_price = #{finalPrice},</if>
+            <if test="saleDate != null">sale_date = #{saleDate},</if>
+            <if test="salespersonUserId != null">salesperson_user_id = #{salespersonUserId},</if>
+            <if test="paymentMethod != null">payment_method = #{paymentMethod},</if>
+            <if test="deliveryDate != null">delivery_date = #{deliveryDate},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteSalesRecordById" parameterType="Long">
+        delete from tb_sales_record where id = #{id}
+    </delete>
+
+    <delete id="deleteSalesRecordByIds" parameterType="String">
+        delete from tb_sales_record where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
