@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.zngl.mapper.ZnFarmerProfileMapper">
+    
+    <resultMap type="ZnFarmerProfile" id="ZnFarmerProfileResult">
+        <result property="id"    column="id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="realName"    column="real_name"    />
+        <result property="idCard"    column="id_card"    />
+        <result property="farmAddress"    column="farm_address"    />
+        <result property="farmArea"    column="farm_area"    />
+        <result property="mainCrop"    column="main_crop"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectZnFarmerProfileVo">
+        select id, user_id, real_name, id_card, farm_address, farm_area, main_crop, create_time, update_time, remark from zn_farmer_profile
+    </sql>
+
+    <select id="selectZnFarmerProfileList" parameterType="ZnFarmerProfile" resultMap="ZnFarmerProfileResult">
+        <include refid="selectZnFarmerProfileVo"/>
+        <where>  
+            <if test="realName != null  and realName != ''"> and real_name like concat('%', #{realName}, '%')</if>
+            <if test="idCard != null  and idCard != ''"> and id_card = #{idCard}</if>
+        </where>
+    </select>
+    
+    <select id="selectZnFarmerProfileById" parameterType="Long" resultMap="ZnFarmerProfileResult">
+        <include refid="selectZnFarmerProfileVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertZnFarmerProfile" parameterType="ZnFarmerProfile" useGeneratedKeys="true" keyProperty="id">
+        insert into zn_farmer_profile
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null">user_id,</if>
+            <if test="realName != null">real_name,</if>
+            <if test="idCard != null">id_card,</if>
+            <if test="farmAddress != null">farm_address,</if>
+            <if test="farmArea != null">farm_area,</if>
+            <if test="mainCrop != null">main_crop,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userId != null">#{userId},</if>
+            <if test="realName != null">#{realName},</if>
+            <if test="idCard != null">#{idCard},</if>
+            <if test="farmAddress != null">#{farmAddress},</if>
+            <if test="farmArea != null">#{farmArea},</if>
+            <if test="mainCrop != null">#{mainCrop},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateZnFarmerProfile" parameterType="ZnFarmerProfile">
+        update zn_farmer_profile
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="realName != null">real_name = #{realName},</if>
+            <if test="idCard != null">id_card = #{idCard},</if>
+            <if test="farmAddress != null">farm_address = #{farmAddress},</if>
+            <if test="farmArea != null">farm_area = #{farmArea},</if>
+            <if test="mainCrop != null">main_crop = #{mainCrop},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteZnFarmerProfileById" parameterType="Long">
+        delete from zn_farmer_profile where id = #{id}
+    </delete>
+
+    <delete id="deleteZnFarmerProfileByIds" parameterType="String">
+        delete from zn_farmer_profile where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

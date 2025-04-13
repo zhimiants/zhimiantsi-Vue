@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.zngl.mapper.ZnTrainingCourseMapper">
+    
+    <resultMap type="ZnTrainingCourse" id="ZnTrainingCourseResult">
+        <result property="id"    column="id"    />
+        <result property="title"    column="title"    />
+        <result property="description"    column="description"    />
+        <result property="instructor"    column="instructor"    />
+        <result property="duration"    column="duration"    />
+        <result property="location"    column="location"    />
+        <result property="startDate"    column="start_date"    />
+        <result property="targetAudience"    column="target_audience"    />
+        <result property="status"    column="status"    />
+        <result property="coverImageUrl"    column="cover_image_url"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectZnTrainingCourseVo">
+        select id, title, description, instructor, duration, location, start_date, target_audience, status, cover_image_url, create_time, update_time, remark from zn_training_course
+    </sql>
+
+    <select id="selectZnTrainingCourseList" parameterType="ZnTrainingCourse" resultMap="ZnTrainingCourseResult">
+        <include refid="selectZnTrainingCourseVo"/>
+        <where>  
+            <if test="title != null  and title != ''"> and title = #{title}</if>
+            <if test="startDate != null "> and start_date = #{startDate}</if>
+            <if test="targetAudience != null  and targetAudience != ''"> and target_audience = #{targetAudience}</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+        </where>
+    </select>
+    
+    <select id="selectZnTrainingCourseById" parameterType="Long" resultMap="ZnTrainingCourseResult">
+        <include refid="selectZnTrainingCourseVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertZnTrainingCourse" parameterType="ZnTrainingCourse" useGeneratedKeys="true" keyProperty="id">
+        insert into zn_training_course
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="title != null and title != ''">title,</if>
+            <if test="description != null">description,</if>
+            <if test="instructor != null">instructor,</if>
+            <if test="duration != null">duration,</if>
+            <if test="location != null">location,</if>
+            <if test="startDate != null">start_date,</if>
+            <if test="targetAudience != null">target_audience,</if>
+            <if test="status != null">status,</if>
+            <if test="coverImageUrl != null">cover_image_url,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="title != null and title != ''">#{title},</if>
+            <if test="description != null">#{description},</if>
+            <if test="instructor != null">#{instructor},</if>
+            <if test="duration != null">#{duration},</if>
+            <if test="location != null">#{location},</if>
+            <if test="startDate != null">#{startDate},</if>
+            <if test="targetAudience != null">#{targetAudience},</if>
+            <if test="status != null">#{status},</if>
+            <if test="coverImageUrl != null">#{coverImageUrl},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateZnTrainingCourse" parameterType="ZnTrainingCourse">
+        update zn_training_course
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="title != null and title != ''">title = #{title},</if>
+            <if test="description != null">description = #{description},</if>
+            <if test="instructor != null">instructor = #{instructor},</if>
+            <if test="duration != null">duration = #{duration},</if>
+            <if test="location != null">location = #{location},</if>
+            <if test="startDate != null">start_date = #{startDate},</if>
+            <if test="targetAudience != null">target_audience = #{targetAudience},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="coverImageUrl != null">cover_image_url = #{coverImageUrl},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteZnTrainingCourseById" parameterType="Long">
+        delete from zn_training_course where id = #{id}
+    </delete>
+
+    <delete id="deleteZnTrainingCourseByIds" parameterType="String">
+        delete from zn_training_course where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

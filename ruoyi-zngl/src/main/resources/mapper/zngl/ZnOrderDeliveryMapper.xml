@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.zngl.mapper.ZnOrderDeliveryMapper">
+    
+    <resultMap type="ZnOrderDelivery" id="ZnOrderDeliveryResult">
+        <result property="id"    column="id"    />
+        <result property="orderId"    column="order_id"    />
+        <result property="deliveryCompany"    column="delivery_company"    />
+        <result property="deliveryNo"    column="delivery_no"    />
+        <result property="deliveryTime"    column="delivery_time"    />
+        <result property="receiveTime"    column="receive_time"    />
+        <result property="deliveryStatus"    column="delivery_status"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectZnOrderDeliveryVo">
+        select id, order_id, delivery_company, delivery_no, delivery_time, receive_time, delivery_status, create_time, update_time, remark from zn_order_delivery
+    </sql>
+
+    <select id="selectZnOrderDeliveryList" parameterType="ZnOrderDelivery" resultMap="ZnOrderDeliveryResult">
+        <include refid="selectZnOrderDeliveryVo"/>
+        <where>  
+            <if test="orderId != null "> and order_id = #{orderId}</if>
+            <if test="deliveryCompany != null  and deliveryCompany != ''"> and delivery_company = #{deliveryCompany}</if>
+            <if test="deliveryNo != null  and deliveryNo != ''"> and delivery_no = #{deliveryNo}</if>
+            <if test="deliveryStatus != null  and deliveryStatus != ''"> and delivery_status = #{deliveryStatus}</if>
+        </where>
+    </select>
+    
+    <select id="selectZnOrderDeliveryById" parameterType="Long" resultMap="ZnOrderDeliveryResult">
+        <include refid="selectZnOrderDeliveryVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertZnOrderDelivery" parameterType="ZnOrderDelivery" useGeneratedKeys="true" keyProperty="id">
+        insert into zn_order_delivery
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="orderId != null">order_id,</if>
+            <if test="deliveryCompany != null">delivery_company,</if>
+            <if test="deliveryNo != null">delivery_no,</if>
+            <if test="deliveryTime != null">delivery_time,</if>
+            <if test="receiveTime != null">receive_time,</if>
+            <if test="deliveryStatus != null">delivery_status,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="orderId != null">#{orderId},</if>
+            <if test="deliveryCompany != null">#{deliveryCompany},</if>
+            <if test="deliveryNo != null">#{deliveryNo},</if>
+            <if test="deliveryTime != null">#{deliveryTime},</if>
+            <if test="receiveTime != null">#{receiveTime},</if>
+            <if test="deliveryStatus != null">#{deliveryStatus},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateZnOrderDelivery" parameterType="ZnOrderDelivery">
+        update zn_order_delivery
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="orderId != null">order_id = #{orderId},</if>
+            <if test="deliveryCompany != null">delivery_company = #{deliveryCompany},</if>
+            <if test="deliveryNo != null">delivery_no = #{deliveryNo},</if>
+            <if test="deliveryTime != null">delivery_time = #{deliveryTime},</if>
+            <if test="receiveTime != null">receive_time = #{receiveTime},</if>
+            <if test="deliveryStatus != null">delivery_status = #{deliveryStatus},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteZnOrderDeliveryById" parameterType="Long">
+        delete from zn_order_delivery where id = #{id}
+    </delete>
+
+    <delete id="deleteZnOrderDeliveryByIds" parameterType="String">
+        delete from zn_order_delivery where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

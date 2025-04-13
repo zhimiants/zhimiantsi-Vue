@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.zngl.mapper.ZnOrderPaymentMapper">
+    
+    <resultMap type="ZnOrderPayment" id="ZnOrderPaymentResult">
+        <result property="id"    column="id"    />
+        <result property="orderId"    column="order_id"    />
+        <result property="paymentTime"    column="payment_time"    />
+        <result property="transactionId"    column="transaction_id"    />
+        <result property="paymentAmount"    column="payment_amount"    />
+        <result property="paymentStatus"    column="payment_status"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectZnOrderPaymentVo">
+        select id, order_id, payment_time, transaction_id, payment_amount, payment_status, create_time, update_time, remark from zn_order_payment
+    </sql>
+
+    <select id="selectZnOrderPaymentList" parameterType="ZnOrderPayment" resultMap="ZnOrderPaymentResult">
+        <include refid="selectZnOrderPaymentVo"/>
+        <where>  
+            <if test="orderId != null "> and order_id = #{orderId}</if>
+            <if test="paymentTime != null "> and payment_time = #{paymentTime}</if>
+            <if test="paymentStatus != null  and paymentStatus != ''"> and payment_status = #{paymentStatus}</if>
+        </where>
+    </select>
+    
+    <select id="selectZnOrderPaymentById" parameterType="Long" resultMap="ZnOrderPaymentResult">
+        <include refid="selectZnOrderPaymentVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertZnOrderPayment" parameterType="ZnOrderPayment" useGeneratedKeys="true" keyProperty="id">
+        insert into zn_order_payment
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="orderId != null">order_id,</if>
+            <if test="paymentTime != null">payment_time,</if>
+            <if test="transactionId != null">transaction_id,</if>
+            <if test="paymentAmount != null">payment_amount,</if>
+            <if test="paymentStatus != null">payment_status,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="orderId != null">#{orderId},</if>
+            <if test="paymentTime != null">#{paymentTime},</if>
+            <if test="transactionId != null">#{transactionId},</if>
+            <if test="paymentAmount != null">#{paymentAmount},</if>
+            <if test="paymentStatus != null">#{paymentStatus},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateZnOrderPayment" parameterType="ZnOrderPayment">
+        update zn_order_payment
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="orderId != null">order_id = #{orderId},</if>
+            <if test="paymentTime != null">payment_time = #{paymentTime},</if>
+            <if test="transactionId != null">transaction_id = #{transactionId},</if>
+            <if test="paymentAmount != null">payment_amount = #{paymentAmount},</if>
+            <if test="paymentStatus != null">payment_status = #{paymentStatus},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteZnOrderPaymentById" parameterType="Long">
+        delete from zn_order_payment where id = #{id}
+    </delete>
+
+    <delete id="deleteZnOrderPaymentByIds" parameterType="String">
+        delete from zn_order_payment where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

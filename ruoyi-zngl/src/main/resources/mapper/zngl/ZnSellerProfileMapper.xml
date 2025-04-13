@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.zngl.mapper.ZnSellerProfileMapper">
+    
+    <resultMap type="ZnSellerProfile" id="ZnSellerProfileResult">
+        <result property="id"    column="id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="shopName"    column="shop_name"    />
+        <result property="contactName"    column="contact_name"    />
+        <result property="businessLicenseUrl"    column="business_license_url"    />
+        <result property="shopAddress"    column="shop_address"    />
+        <result property="shopDescription"    column="shop_description"    />
+        <result property="approvalStatus"    column="approval_status"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectZnSellerProfileVo">
+        select id, user_id, shop_name, contact_name, business_license_url, shop_address, shop_description, approval_status, create_time, update_time, remark from zn_seller_profile
+    </sql>
+
+    <select id="selectZnSellerProfileList" parameterType="ZnSellerProfile" resultMap="ZnSellerProfileResult">
+        <include refid="selectZnSellerProfileVo"/>
+        <where>  
+            <if test="shopName != null  and shopName != ''"> and shop_name like concat('%', #{shopName}, '%')</if>
+            <if test="contactName != null  and contactName != ''"> and contact_name like concat('%', #{contactName}, '%')</if>
+            <if test="approvalStatus != null  and approvalStatus != ''"> and approval_status = #{approvalStatus}</if>
+        </where>
+    </select>
+    
+    <select id="selectZnSellerProfileById" parameterType="Long" resultMap="ZnSellerProfileResult">
+        <include refid="selectZnSellerProfileVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertZnSellerProfile" parameterType="ZnSellerProfile" useGeneratedKeys="true" keyProperty="id">
+        insert into zn_seller_profile
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null">user_id,</if>
+            <if test="shopName != null and shopName != ''">shop_name,</if>
+            <if test="contactName != null">contact_name,</if>
+            <if test="businessLicenseUrl != null">business_license_url,</if>
+            <if test="shopAddress != null">shop_address,</if>
+            <if test="shopDescription != null">shop_description,</if>
+            <if test="approvalStatus != null">approval_status,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userId != null">#{userId},</if>
+            <if test="shopName != null and shopName != ''">#{shopName},</if>
+            <if test="contactName != null">#{contactName},</if>
+            <if test="businessLicenseUrl != null">#{businessLicenseUrl},</if>
+            <if test="shopAddress != null">#{shopAddress},</if>
+            <if test="shopDescription != null">#{shopDescription},</if>
+            <if test="approvalStatus != null">#{approvalStatus},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateZnSellerProfile" parameterType="ZnSellerProfile">
+        update zn_seller_profile
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="shopName != null and shopName != ''">shop_name = #{shopName},</if>
+            <if test="contactName != null">contact_name = #{contactName},</if>
+            <if test="businessLicenseUrl != null">business_license_url = #{businessLicenseUrl},</if>
+            <if test="shopAddress != null">shop_address = #{shopAddress},</if>
+            <if test="shopDescription != null">shop_description = #{shopDescription},</if>
+            <if test="approvalStatus != null">approval_status = #{approvalStatus},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteZnSellerProfileById" parameterType="Long">
+        delete from zn_seller_profile where id = #{id}
+    </delete>
+
+    <delete id="deleteZnSellerProfileByIds" parameterType="String">
+        delete from zn_seller_profile where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

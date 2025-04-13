@@ -5,14 +5,14 @@ spring:
         driverClassName: com.mysql.cj.jdbc.Driver
         druid:
             # 主库数据源
-#            master:
-#                url: jdbc:mysql://localhost:3306/ry-vue?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
-#                username: root
-#                password: password
             master:
-                url: jdbc:mysql://root:s6g4ghxw@dbconn.sealoshzh.site:39920/zhimiants_vue?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
+                url: jdbc:mysql://localhost:3306/ry_vue?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
                 username: root
-                password: s6g4ghxw
+                password: root
+#            master:
+#                url: jdbc:mysql://root:s6g4ghxw@dbconn.sealoshzh.site:39920/zhimiants_vue?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
+#                username: root
+#                password: s6g4ghxw
             # 从库数据源
             slave:
                 # 从数据源开关/默认关闭
